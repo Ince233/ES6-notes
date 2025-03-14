@@ -670,3 +670,82 @@ p.catch(reason =>{
 });
 ```
 
+# 模块化
+
+指将一个大的程序文件，拆分成许多小的文件，然后将小文件组合起来
+
+模块化的好处：
+
+- 防止命名冲突
+- 代码复用
+- 高维护性
+
+ES6之前的模块化产品有:
+
+CommonJS: NodeJs,Browserify
+
+AMD: requireJS
+
+CMD: seaJS
+
+模块化语法：
+
+两个命令：export and import
+
+export 用于规定模块的对外接口
+
+import用于输入其他模块提供的功能
+
+```javascript
+//命名导入：适用于多个导入
+export let school = 'sgg';
+
+export function teach(){
+    console.log("a function which is exported");
+}
+//命名为some.js
+```
+
+```javascript
+//在另一个html文件引入some.js
+import * as m1 from "./some.js";
+//或 import {school, teach} from "./some.js";
+console.log(m1);
+```
+
+```javascript
+//默认导入：适用于单一主要功能导入
+export default class User{
+    constructor(name) {
+        this.name = name;
+    }
+}
+//命名为some.js
+```
+
+```javascript
+import MyUser from "./some.js";
+const newUser = new MyUser("Bob");
+console.log(newUser.name);
+```
+
+```javascript
+//混合导入
+export let school = 'sgg';
+
+export function teach(){
+    console.log("a function which is exported");
+}
+
+export default class User{
+    constructor(name) {
+        this.name = name;
+    }
+}
+//命名为config.js
+```
+
+```javascript
+import MyUser,{school, teach} from "./config.js";
+```
+
