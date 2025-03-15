@@ -1,4 +1,4 @@
-# ECMA
+# forECMA
 
 European Computer Manufacturers Association, 开发评估计算机标准的欧洲组织
 
@@ -971,30 +971,75 @@ import * as m3 from "./m3.js";
 
 ```
 
-
-
-# Js数组的方法
-
-| 方法        | 是否修改原数组 | 参数                           | 返回值               | 作用                         |
-| ----------- | -------------- | ------------------------------ | -------------------- | ---------------------------- |
-| pop()       | ✅              | 无                             | 被删除的元素         | 删除最后一个元素             |
-| push()      | ✅              | 一个或多个要添加的元素         | 新数组长度           | 追加元素到数组末尾           |
-| shift()     | ✅              | 无                             | 被删除的元素         | 删除第一个元素               |
-| unshift()   | ✅              | 一个或多个要添加的元素         | 新数组长度           | 在数组开头添加元素           |
-| reverse()   | ✅              | 无                             | 修改后的数组         | 反转数组                     |
-| sort()      | ✅              | 排序函数（可选）               | 修改后的数组         | 排序数组（默认按字符串排序） |
-| splice()    | ✅              | 起始索引、删除个数、插入的元素 | 被删除的元素数组     | 删除/替换/插入元素           |
-| forEach()   | ❌              | 回调函数                       | undefined            | 遍历数组，不返回新数组       |
-| map()       | ❌              | 回调函数                       | 新数组               | 遍历数组并返回新数组         |
-| filter()    | ❌              | 回调函数                       | 新数组               | 过滤数组并返回符合条件的元素 |
-| some()      | ❌              | 回调函数                       | true / false         | 是否有元素符合条件           |
-| find()      | ❌              | 回调函数                       | 第一个符合条件的元素 | 找到符合条件的第一个元素     |
-| findIndex() | ❌              | 回调函数                       | 第一个符合条件的索引 | 找到符合条件的第一个元素索引 |
-| slice()     | ❌              | 起始索引、结束索引（可选）     | 新数组               | 返回数组的一个片段           |
-
 # Js基础补充
 
-### 各种函数：
+## Js数组的方法
+
+| 方法        | 是否修改原数组 | 参数                           | 返回值               | 作用                         | 回调函数参数                                          |
+| ----------- | -------------- | ------------------------------ | -------------------- | ---------------------------- | ----------------------------------------------------- |
+| pop()       | ✅              | 无                             | 被删除的元素         | 删除最后一个元素             | 无                                                    |
+| push()      | ✅              | 一个或多个要添加的元素         | 新数组长度           | 追加元素到数组末尾           | 无                                                    |
+| shift()     | ✅              | 无                             | 被删除的元素         | 删除第一个元素               | 无                                                    |
+| unshift()   | ✅              | 一个或多个要添加的元素         | 新数组长度           | 在数组开头添加元素           | 无                                                    |
+| reverse()   | ✅              | 无                             | 修改后的数组         | 反转数组                     | 无                                                    |
+| sort()      | ✅              | 排序函数（可选）               | 修改后的数组         | 排序数组（默认按字符串排序） | `a`, `b`（比较的两个元素）                            |
+| splice()    | ✅              | 起始索引、删除个数、插入的元素 | 被删除的元素数组     | 删除/替换/插入元素           | `value`, `index`, `array`（数组元素及其索引）         |
+| forEach()   | ❌              | 回调函数                       | undefined            | 遍历数组，不返回新数组       | `element`, `index`, `array`（当前元素、索引、原数组） |
+| map()       | ❌              | 回调函数                       | 新数组               | 遍历数组并返回新数组         | `element`, `index`, `array`（当前元素、索引、原数组） |
+| filter()    | ❌              | 回调函数                       | 新数组               | 过滤数组并返回符合条件的元素 | `element`, `index`, `array`（当前元素、索引、原数组） |
+| some()      | ❌              | 回调函数                       | true / false         | 是否有元素符合条件           | `element`, `index`, `array`（当前元素、索引、原数组） |
+| find()      | ❌              | 回调函数                       | 第一个符合条件的元素 | 找到符合条件的第一个元素     | `element`, `index`, `array`（当前元素、索引、原数组） |
+| findIndex() | ❌              | 回调函数                       | 第一个符合条件的索引 | 找到符合条件的第一个元素索引 | `element`, `index`, `array`（当前元素、索引、原数组） |
+| slice()     | ❌              | 起始索引、结束索引（可选）     | 新数组               | 返回数组的一个片段           | 无                                                    |
+
+```javascript
+//forEach打印数组元素的平方
+const numbers = [2,4,6,8,10];
+numbers.forEach(val => {
+    console.log(val * val);
+})
+//map创建新数组=原数组+1
+const nums = [1, 2, 3, 4, 5]
+const newnums = nums.map(val1,val2 => val1 + 1 );//val2可省略
+console.log(newnums);
+//filter筛选元素>5
+const mixed = [3, 7, 8, 1, 2, 9, 5]
+const larger = mixed.filter(val1,val2 => val1 > 5);//val2可省略
+console.log(larger);
+//some查找是否存在>18的元素
+const ages = [21, 16, 18, 24, 30]
+const exist = age.some(val,val2 => val1 > 18);//val2可省略
+console.log(exist);
+//find查找第一个符合条件的元素
+const students = [
+  {name: "Alice", age: 18},
+  {name: "Bob", age: 22},
+  {name: "Charlie", age: 17}
+];
+const first = students.find(stu => stu.name === "Charlie");
+console.log(first);
+//findIndex查找第一个符合条件的元素索引
+const names = ["Alice", "Bob", "Charlie", "David"];
+const index = names.findIndex(name => name === "Charlie");
+console.log(index); // 返回 2，因为 "Charlie" 在索引 2
+//slice索引
+const colors = ["red", "blue", "green", "yellow", "pink"];
+const slicedColors = colors.slice(1, 3);//区间为左闭右开
+console.log(slicedColors); // 返回 ["blue", "green"]
+//splice插入元素
+const fruits = ["apple", "banana", "cherry", "date"];
+const removed = fruits.splice(1, 2, "orange", "pear");
+console.log(fruits); // 返回 ["apple", "orange", "pear", "date"]
+console.log(removed); // 返回 ["banana", "cherry"]
+//sort排序
+const nums = [8, 3, 12, 5, 1];
+const sortedNums = nums.sort((a, b) => a - b);
+console.log(sortedNums); // 返回 [1, 3, 5, 8, 12]
+```
+
+
+
+## 各种函数：
 
 | 特性                 | 函数声明            | 函数表达式                 | 箭头函数               | 构造函数               | Generator 函数       | Async 函数                 |
 | -------------------- | ------------------- | -------------------------- | ---------------------- | ---------------------- | -------------------- | -------------------------- |
@@ -1004,7 +1049,7 @@ import * as m3 from "./m3.js";
 | 是否可以作为构造函数 | 是                  | 否                         | 否                     | 是                     | 否                   | 否                         |
 | 返回值               | 没有返回值          | 返回函数                   | 返回函数               | 返回新对象             | 返回迭代器对象       | 返回 `Promise` 对象        |
 
-### 函数声明、函数表达式、与构造函数
+## 函数声明、函数表达式、与构造函数
 
 ```javascript
 function add(a,b){return a+b;}//函数声明
@@ -1012,7 +1057,7 @@ var add=function(a,b){return a+b;}//函数表达式
 var add=new Function('a','b','return a+b')//构造函数
 ```
 
-### 四则运算符对字符串/数字的操作优先级
+## 四则运算符对字符串/数字的操作优先级
 
 在 JavaScript 中，运算符 `+` 和 `-*/` 的行为有所不同：
 
@@ -1043,12 +1088,12 @@ var add=new Function('a','b','return a+b')//构造函数
    console.log('5' / '2');    // 输出 2.5（字符串 '5' 和 '2' 会转换为数字）
    ```
 
-### 显示转换
+## 显式转换
 
 - `parseInt()`：从字符串的开头将字符串解析为整数，会解析到第一个非数字字符为止，如果无法解析则返回 `NaN`。
 - `Boolean()`：将值转换为布尔类型，`undefined`、`null`、`0`、空字符串、`NaN` 转换为 `false`，其他值转换为 `true`。
 
-### **try...catch...finally 的执行顺序**
+## **try...catch...finally 的执行顺序**
 
 `try...catch...finally` 用于处理异常，执行顺序如下：
 
