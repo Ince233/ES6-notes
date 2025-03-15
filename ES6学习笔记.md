@@ -486,7 +486,9 @@ P21-24没看懂
 
 模拟获取 用户数据 订单数据 商品数据
 
-# Promise的基本使用
+# Promise语法
+
+## Promise的基本使用
 
 ES6引入的异步编程的新方案。语法上Promise是一个构造函数，用来封装异步操作，并可以获取其成功或失败的结果
 
@@ -515,7 +517,7 @@ p.then(function(value){
 });
 ```
 
-## 案例 Promise封装读取文件
+### 案例 Promise封装读取文件
 
 ```javascript
 //1 引入fs模块
@@ -545,7 +547,7 @@ p.then(function(value){
 })
 ```
 
-## 案例 Promise封装AJAX请求
+### 案例 Promise封装AJAX请求
 
 ```javascript
 //接口地址:https://api.apiopen.top/getJoke
@@ -612,7 +614,7 @@ p.then(function(value){
 
 ```
 
-# Promise.prototype...then方法
+## Promise.prototype...then方法
 
 ```javascript
 //创建promise对象
@@ -642,13 +644,13 @@ console.log(result);//输出一个promise对象，说明then返回结果也是pr
 //then方法可以链式调用
 ```
 
-## 案例 多文件内容读取
+### 案例 多文件内容读取
 
 ```javascript
 
 ```
 
-# Promise的catch方法
+## Promise的catch方法
 
 ```javascript
 const p = Promise((resolve, reject) =>{
@@ -669,6 +671,213 @@ p.catch(reason =>{
     console.warn(reason);
 });
 ```
+
+# Class类
+
+## class关键字引入
+
+引入class关键字，但其功能ES5都可以实现
+
+```javascript
+//ES5完成手机类
+function phone(brand,price){
+    this.brand = brand;
+    this.price = price;
+}
+//添加方法
+phone.prototype.call = function(){
+    console.log('I can make a call');
+}
+
+let huawei = new phone('华为'，3999);
+Huawai.call();
+console.log(Huawei);
+```
+
+```javascript
+//ES6完成手机类
+class phone{
+    //构造方法 名字不能修改
+    constructor(brand,price){
+        this.brand = brand;
+    	this.price = price;
+    }
+    //必须使用该语法不能使用ES5的对象完整形式,应省略:function
+    //call: function(){};错误
+    call(){
+        console.log("I can make a call");
+    }
+}
+
+let onePlus = new phone('1+',2999);
+onePlus.call();
+console.log(onePlus);
+```
+
+## class静态成员
+
+```javascript
+//ES5
+function phone(){
+    
+}
+phone.name = '手机';
+phone.change = function(){
+    console.log('I can change the world');
+}
+
+phone.prototype.size = "5.5inch";
+const nokia = new phone();
+console.log(nokia.name);//undefined
+console.log(phone.name);//可输出'手机'
+nokia.change();//undrfined
+phone.change();//输出"I can change the world"
+console.log(nokia.size);//可输出"5.5inch"
+//name,change是属于函数对象（类）的，只有phone类能访问，实例nokia不能访问，称为静态成员
+//size是属于实例的，nokia能访问，而phone类不能访问
+```
+
+```javascript
+//ES6
+class phone{
+    //静态成员
+    static name = '手机';
+	static change(){
+        console.log('I can change the world');
+    }
+}
+
+let nokia = new phone();
+console.log(phone.name);//输出"手机"
+console.log(nokia.name);//undefined
+phone.change();//输出"I can change the world"
+//static直接定义了静态成员，只有该phone类能访问，该对象的实例nokia不能访问
+```
+
+## 构造函数继承(ES5)
+
+```javascript
+//ES5写法
+function phone(brand, price){
+    this.brand = brand;
+    this.price = price;
+}
+
+Phone.prototype.call = function(){
+    console.log("I can make a call");
+}
+
+//智能手机
+function smartPhone(brand, price, color, size){
+    phone.call(this,brand,price);
+    this.color = color;
+    this.size = size;
+}
+
+//设置子级构造函数的原型
+smartPhone.prototype = new phone;
+smartPhone.prototype.constructor = smartPhone;
+
+//声明子类的方法
+smartPhone.prototype.photo = function(){
+    console.log('I can take a photo');
+}
+
+const xiaomi = new smartPhone('小米',2499,'黑色','5.5inch');
+```
+
+## class类继承
+
+```javascript
+//ES5类继承
+class phone{
+    //构造方法
+    constructor(brand, price){
+        this.brand = brand;
+        this.price = price;
+    }
+    call(){
+        console.log('I can make a call');
+    }
+}
+
+class smartPhone extends phone{
+    constructor(brand, price, color, size){
+        super(brand, price);
+        this.color = color;
+        this.size = size;
+    }
+    photo(){
+        console.log('I can take a photo');
+    }
+}
+
+const xiaomi = new smartPhone('小米',2499,'黑色','5.5inch');//父类方法在_proto_里面
+```
+
+## 子类对父类的方法重写
+
+```javascript
+//ES5类继承
+class phone{
+    //构造方法
+    constructor(brand, price){
+        this.brand = brand;
+        this.price = price;
+    }
+    call(){
+        console.log('I can make a call');
+    }
+}
+
+class smartPhone extends phone{
+    constructor(brand, price, color, size){
+        super(brand, price);
+        this.color = color;
+        this.size = size;
+    }
+    photo(){
+        console.log('I can take a photo');
+    }
+    //重写
+    call(){
+        console.log('I can make a video call');//父类的 call() 方法依然存在，但是由于子类的 call() 方法覆盖了父类的方法，所以当你调用 smartPhone 实例的 call() 方法时，它会调用子类的实现。
+    }
+}
+
+const xiaomi = new smartPhone('小米',2499,'黑色','5.5inch');//父类方法在_proto_里面
+xiaomi.call(); // 调用的是子类的 call 方法，输出: 'I can make a video call'
+xiaomi.photo(); // 调用子类的 photo 方法，输出: 'I can take a photo'
+
+const iphone = new phone('苹果', 5999);
+iphone.call(); // 调用的是父类的 call 方法，输出: 'I can make a call'
+
+xiaomi.call = function() { console.log("Overridden in instance"); }//实例级别的重写可覆盖类
+xiaomi.call(); // 输出: 'Overridden in instance'
+
+```
+
+## get和set
+
+```javascript
+class phone{
+    get price(){
+        console.log('price is read');
+        return 'ok';
+    }
+    set price(newVal){
+        console.log('price is revised');
+    }
+}
+
+let s = new phone();
+console.log(s.price);
+
+s.price = 'free';
+//输出'price is revised'
+```
+
+
 
 # 模块化
 
@@ -749,3 +958,152 @@ export default class User{
 import MyUser,{school, teach} from "./config.js";
 ```
 
+```javascript
+//标签内引入
+//标签属性引入
+<script src = "./src/js/app.js" type = "module"></script>
+//入口文件
+
+//模块引入
+import * as m1 from "./m1.js";
+import * as m2 from "./m2.js";
+import * as m3 from "./m3.js";
+
+```
+
+
+
+# Js数组的方法
+
+| 方法        | 是否修改原数组 | 参数                           | 返回值               | 作用                         |
+| ----------- | -------------- | ------------------------------ | -------------------- | ---------------------------- |
+| pop()       | ✅              | 无                             | 被删除的元素         | 删除最后一个元素             |
+| push()      | ✅              | 一个或多个要添加的元素         | 新数组长度           | 追加元素到数组末尾           |
+| shift()     | ✅              | 无                             | 被删除的元素         | 删除第一个元素               |
+| unshift()   | ✅              | 一个或多个要添加的元素         | 新数组长度           | 在数组开头添加元素           |
+| reverse()   | ✅              | 无                             | 修改后的数组         | 反转数组                     |
+| sort()      | ✅              | 排序函数（可选）               | 修改后的数组         | 排序数组（默认按字符串排序） |
+| splice()    | ✅              | 起始索引、删除个数、插入的元素 | 被删除的元素数组     | 删除/替换/插入元素           |
+| forEach()   | ❌              | 回调函数                       | undefined            | 遍历数组，不返回新数组       |
+| map()       | ❌              | 回调函数                       | 新数组               | 遍历数组并返回新数组         |
+| filter()    | ❌              | 回调函数                       | 新数组               | 过滤数组并返回符合条件的元素 |
+| some()      | ❌              | 回调函数                       | true / false         | 是否有元素符合条件           |
+| find()      | ❌              | 回调函数                       | 第一个符合条件的元素 | 找到符合条件的第一个元素     |
+| findIndex() | ❌              | 回调函数                       | 第一个符合条件的索引 | 找到符合条件的第一个元素索引 |
+| slice()     | ❌              | 起始索引、结束索引（可选）     | 新数组               | 返回数组的一个片段           |
+
+# Js基础补充
+
+### 各种函数：
+
+| 特性                 | 函数声明            | 函数表达式                 | 箭头函数               | 构造函数               | Generator 函数       | Async 函数                 |
+| -------------------- | ------------------- | -------------------------- | ---------------------- | ---------------------- | -------------------- | -------------------------- |
+| 语法                 | `function foo() {}` | `const foo = function(){}` | `const foo = () => {}` | `function Person() {}` | `function* foo() {}` | `async function foo() {}`  |
+| 是否提升             | 是                  | 否                         | 否                     | 否                     | 否                   | 否                         |
+| `this` 指向          | 函数的调用上下文    | 函数的调用上下文           | 外部作用域             | 新创建的对象           | 外部作用域           | 返回 `Promise`，`await` 等 |
+| 是否可以作为构造函数 | 是                  | 否                         | 否                     | 是                     | 否                   | 否                         |
+| 返回值               | 没有返回值          | 返回函数                   | 返回函数               | 返回新对象             | 返回迭代器对象       | 返回 `Promise` 对象        |
+
+### 函数声明、函数表达式、与构造函数
+
+```javascript
+function add(a,b){return a+b;}//函数声明
+var add=function(a,b){return a+b;}//函数表达式
+var add=new Function('a','b','return a+b')//构造函数
+```
+
+### 四则运算符对字符串/数字的操作优先级
+
+在 JavaScript 中，运算符 `+` 和 `-*/` 的行为有所不同：
+
+1. **+ 运算符：**
+
+   - 如果两边的操作数中有任何一个是字符串，`+` 会将其转换成字符串并执行字符串拼接。
+   - 如果两边的操作数都是数字，`+` 会执行数值加法。
+
+   例如：
+
+   ```javascript
+   javascript复制编辑console.log(5 + 3);        // 输出 8（数字加法）
+   console.log('5' + 3);      // 输出 '53'（字符串拼接）
+   console.log(5 + '3');      // 输出 '53'（字符串拼接）
+   console.log('5' + '3');    // 输出 '53'（字符串拼接）
+   ```
+
+2. **-, \*, / 运算符：**
+
+   - 这些运算符优先执行数值运算。如果操作数是字符串，它们会尝试将字符串转换为数字进行计算。
+
+   例如：
+
+   ```javascript
+   javascript复制编辑console.log(5 - 3);        // 输出 2（数字减法）
+   console.log('5' - 3);      // 输出 2（字符串 '5' 会转换为数字）
+   console.log(5 * '3');      // 输出 15（字符串 '3' 会转换为数字）
+   console.log('5' / '2');    // 输出 2.5（字符串 '5' 和 '2' 会转换为数字）
+   ```
+
+### 显示转换
+
+- `parseInt()`：从字符串的开头将字符串解析为整数，会解析到第一个非数字字符为止，如果无法解析则返回 `NaN`。
+- `Boolean()`：将值转换为布尔类型，`undefined`、`null`、`0`、空字符串、`NaN` 转换为 `false`，其他值转换为 `true`。
+
+### **try...catch...finally 的执行顺序**
+
+`try...catch...finally` 用于处理异常，执行顺序如下：
+
+1. **try 代码块**：
+   - 先执行 `try` 代码块中的代码。
+   - 如果发生异常，则立即跳转到 `catch` 代码块，并跳过 `try` 中异常之后的代码。
+   - 如果没有异常，`catch` 代码块不会执行，继续执行 `finally` 代码块。
+2. **catch 代码块**（可选）：
+   - 仅当 `try` 代码块中发生异常时执行 `catch` 代码块。
+   - 处理异常，并防止程序崩溃。
+3. **finally 代码块**（可选）：
+   - **无论 try 代码块是否发生异常，finally 都会执行。**
+   - 通常用于清理资源，例如关闭数据库连接、释放文件句柄等。
+
+# JavaScript 和 CSS 的命名方式
+
+## JS与CSS 中命名区别
+在 JavaScript 中，DOM 元素的属性名采用**驼峰命名法**。例如：
+- `background-color`（CSS 中的属性名）在 JavaScript 中变成了 `backgroundColor`
+- `font-size` 变成了 `fontSize`
+- `border-left-width` 变成了 `borderLeftWidth`
+
+在 CSS 中，属性名使用**连接线命名法**。例如：
+- `background-color`
+- `font-size`
+- `border-left-width`
+
+```javascript
+<div class="test"></div> 
+// 在 JavaScript 中，获取类名为 'test' 的第一个元素，并修改其背景色为红色
+document.getElementsByClassName("test")[0].style.backgroundColor = "red";
+```
+
+# JavaScript 获取元素的方法
+
+
+
+| 方法                                | 返回值类型    | 说明                                     |
+| ----------------------------------- | ------------- | ---------------------------------------- |
+| `document.getElementsByClassName()` | `NodeList`    | 返回所有匹配的类名元素                   |
+| `document.getElementsByTagName()`   | `NodeList`    | 返回所有匹配的标签元素                   |
+| `document.querySelectorAll()`       | `NodeList`    | 返回所有匹配的元素（多个匹配时返回所有） |
+| `document.getElementById()`         | `HTMLElement` | 返回匹配的单一元素（通过 `id`）          |
+| `document.querySelector()`          | `HTMLElement` | 返回匹配的第一个元素（通过 CSS 选择器）  |
+
+```javascript
+// 返回节点列表
+const elements = document.getElementsByClassName("example"); // NodeList
+
+// 返回单一元素
+const element = document.getElementById("unique"); // HTMLElement
+
+// 返回节点列表
+const allDivs = document.querySelectorAll("div"); // NodeList
+```
+
+## 总结
+除了 id选择器的唯一性和 querySelector()返回的是单一节点，其他方法返回的都是节点列表
